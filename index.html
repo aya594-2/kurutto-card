@@ -53,7 +53,7 @@
 
 
         <section class="settings">
-            <h2>♡ 抽選する項目</h2>
+            <h2> 抽選する項目</h2>
             <p>項目を1行ずつ入力してね。</p>
 
             <textarea id="itemsInput" rows="6">ゲーム
@@ -63,7 +63,7 @@
 
 
 <div class="item-manager">
-    <p>♡ 項目を1個ずつ追加</p>
+    <p>項目を1個ずつ追加</p>
 
     <div class="item-add-row">
         <input
@@ -88,10 +88,39 @@
         </section>
 
         <footer>
-            <p>made with ♡</p>
+            <p>made with </p>
         </footer>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
+
+
+<!-- 項目編集モーダル -->
+<div id="editModal" class="edit-modal" hidden>
+    <div class="edit-modal-content">
+        <h2> 項目名を編集</h2>
+        <p>新しい項目名を入力してね</p>
+
+        <input
+            type="text"
+            id="editItemInput"
+            placeholder="項目名を入力してね"
+            maxlength="50"
+        >
+
+        <p id="editError" class="edit-error"></p>
+
+        <div class="edit-modal-buttons">
+            <button type="button" id="cancelEditButton" class="sub-button">
+                キャンセル
+            </button>
+            <button type="button" id="saveEditButton" class="sub-button">
+                保存する
+            </button>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>

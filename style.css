@@ -605,3 +605,78 @@ footer {
     }
 }
 
+/* 項目編集モーダル */
+.edit-modal[hidden] {
+    display: none !important;
+}
+
+.edit-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(90, 50, 70, 0.35);
+}
+
+.edit-modal-content {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 360px;
+    padding: 28px 22px;
+    border: 1px solid #ffd2e3;
+    border-radius: 24px;
+    background: #fff8fb;
+    box-shadow: 0 12px 35px rgba(180, 100, 140, 0.2);
+    text-align: center;
+}
+
+.edit-modal-content h2 {
+    margin-top: 0;
+    color: #b94f7c;
+}
+
+.edit-modal-content p {
+    color: #a77d91;
+    font-size: 14px;
+}
+
+#editItemInput {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #f5b8d0;
+    border-radius: 16px;
+    background: #fff;
+    color: #765565;
+    font: inherit;
+    outline: none;
+}
+
+#editItemInput:focus {
+    border-color: #ed8eb5;
+    box-shadow: 0 0 0 3px #ffe5ef;
+}
+
+.edit-error {
+    min-height: 18px;
+    margin: 8px 0;
+    color: #d14d78 !important;
+}
+
+.edit-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.edit-modal-buttons button {
+    flex: 1;
+    margin: 0;
+    padding: 11px 10px;
+    border-radius: 20px;
+}
+

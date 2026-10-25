@@ -3,6 +3,14 @@ const cardMessage = document.getElementById("cardMessage");
 const drawButton = document.getElementById("drawButton");
 const updateButton = document.getElementById("updateButton");
 const itemsInput = document.getElementById("itemsInput");
+// 項目編集画面
+const editModal = document.getElementById("editModal");
+const editItemInput = document.getElementById("editItemInput");
+const editError = document.getElementById("editError");
+const cancelEditButton = document.getElementById("cancelEditButton");
+const saveEditButton = document.getElementById("saveEditButton");
+
+let editingIndex = null;
 const result = document.getElementById("result");
 const itemCount = document.getElementById("itemCount");
 
@@ -26,128 +34,137 @@ function renderTotalCount() {
   totalCountDisplay.textContent = `累計抽選回数：${totalCount}回`;
 }
 
-
 const newItemInput = document.getElementById("newItemInput");
 const addItemButton = document.getElementById("addItemButton");
 const itemList = document.getElementById("itemList");
 
-
 function renderItemList() {
-    itemList.innerHTML = "";
+  itemList.innerHTML = "";
 
-    items.forEach((item, index) => {
-        const listItem = document.createElement("li");
-        const itemName = document.createElement("span");
-        const buttonArea = document.createElement("div");
-        const upButton = document.createElement("button");
-        const downButton = document.createElement("button");
-        const deleteButton = document.createElement("button");
+  items.forEach((item, index) => {
+    const listItem = document.createElement("li");
+    const itemName = document.createElement("span");
+    const buttonArea = document.createElement("div");
+    const upButton = document.createElement("button");
+    const downButton = document.createElement("button");
+    const editButton = document.createElement("button");
+    const deleteButton = document.createElement("button");
 
-        itemName.textContent = item;
+    itemName.textContent = item;
 
-        // 上へ移動するボタン
-        upButton.textContent = "↑";
-        upButton.type = "button";
-        upButton.className = "sub-button";
-        upButton.disabled = index === 0;
+    // 上へ移動
+    upButton.textContent = "↑";
+    upButton.type = "button";
+    upButton.className = "sub-button";
+    upButton.disabled = index === 0;
 
-        upButton.addEventListener("click", () => {
-            if (isDrawing || index === 0) return;
+    upButton.addEventListener("click", () => {
+      if (isDrawing || index === 0) return;
 
-            [items[index - 1], items[index]] =
-                [items[index], items[index - 1]];
+      [items[index - 1], items[index]] = [items[index], items[index - 1]];
 
-            saveItemOrder();
-        });
-
-        // 下へ移動するボタン
-        downButton.textContent = "↓";
-        downButton.type = "button";
-        downButton.className = "sub-button";
-        downButton.disabled = index === items.length - 1;
-
-        downButton.addEventListener("click", () => {
-            if (isDrawing || index === items.length - 1) return;
-
-            [items[index], items[index + 1]] =
-                [items[index + 1], items[index]];
-
-            saveItemOrder();
-        });
-
-        // 削除ボタン
-        deleteButton.textContent = "削除";
-        deleteButton.type = "button";
-        deleteButton.className = "sub-button";
-
-        deleteButton.addEventListener("click", () => {
-            if (isDrawing) return;
-
-            if (items.length <= 2) {
-                result.textContent = "抽選項目は2個以上必要だよ！";
-                return;
-            }
-
-            items.splice(index, 1);
-            saveItemOrder();
-            result.textContent = "項目を削除したよ♪";
-        });
-
-        buttonArea.className = "item-button-area";
-        buttonArea.appendChild(upButton);
-        buttonArea.appendChild(downButton);
-        buttonArea.appendChild(deleteButton);
-
-        listItem.appendChild(itemName);
-        listItem.appendChild(buttonArea);
-        itemList.appendChild(listItem);
+      saveItemOrder();
     });
+
+    // 下へ移動
+    downButton.textContent = "↓";
+    downButton.type = "button";
+    downButton.className = "sub-button";
+    downButton.disabled = index === items.length - 1;
+
+    downButton.addEventListener("click", () => {
+      if (isDrawing || index === items.length - 1) return;
+
+      [items[index], items[index + 1]] = [items[index + 1], items[index]];
+
+      saveItemOrder();
+    });
+
+    // 編集
+    editButton.textContent = "編集";
+    editButton.type = "button";
+    editButton.className = "sub-button";
+
+    editButton.addEventListener("click", () => {
+      if (isDrawing) return;
+
+      editingIndex = index;
+      editItemInput.value = item;
+      editError.textContent = "";
+      editModal.hidden = false;
+      editItemInput.focus();
+    });
+
+    // 削除
+    deleteButton.textContent = "削除";
+    deleteButton.type = "button";
+    deleteButton.className = "sub-button";
+
+    deleteButton.addEventListener("click", () => {
+      if (isDrawing) return;
+
+      if (items.length <= 2) {
+        result.textContent = "抽選項目は2個以上必要だよ！";
+        return;
+      }
+
+      items.splice(index, 1);
+      saveItemOrder();
+      result.textContent = "項目を削除したよ♪";
+    });
+
+    buttonArea.className = "item-button-area";
+    buttonArea.appendChild(upButton);
+    buttonArea.appendChild(downButton);
+    buttonArea.appendChild(editButton);
+    buttonArea.appendChild(deleteButton);
+
+    listItem.appendChild(itemName);
+    listItem.appendChild(buttonArea);
+    itemList.appendChild(listItem);
+  });
 }
 
 // 項目の順番・内容を保存して画面を更新
 function saveItemOrder() {
-    itemsInput.value = items.join("\n");
-    localStorage.setItem("cardItems", JSON.stringify(items));
-    itemCount.textContent = `登録項目：${items.length}個`;
-    renderItemList();
+  itemsInput.value = items.join("\n");
+  localStorage.setItem("cardItems", JSON.stringify(items));
+  itemCount.textContent = `登録項目：${items.length}個`;
+  renderItemList();
 }
 
-
-
 addItemButton.addEventListener("click", () => {
-    if (isDrawing) return;
+  if (isDrawing) return;
 
-    const newItem = newItemInput.value.trim();
+  const newItem = newItemInput.value.trim();
 
-    if (newItem === "") {
-        result.textContent = "追加する項目を入力してね！";
-        return;
-    }
+  if (newItem === "") {
+    result.textContent = "追加する項目を入力してね！";
+    return;
+  }
 
-    if (items.length >= 50) {
-        result.textContent = "項目は50個までにしてね！";
-        return;
-    }
+  if (items.length >= 50) {
+    result.textContent = "項目は50個までにしてね！";
+    return;
+  }
 
-    if (items.includes(newItem)) {
-        result.textContent = "同じ項目は登録済みだよ！";
-        return;
-    }
+  if (items.includes(newItem)) {
+    result.textContent = "同じ項目は登録済みだよ！";
+    return;
+  }
 
-    items.push(newItem);
+  items.push(newItem);
 
-    itemsInput.value = items.join("\n");
-    localStorage.setItem("cardItems", JSON.stringify(items));
+  itemsInput.value = items.join("\n");
+  localStorage.setItem("cardItems", JSON.stringify(items));
 
-    itemCount.textContent = `登録項目：${items.length}個`;
-    newItemInput.value = "";
+  itemCount.textContent = `登録項目：${items.length}個`;
+  newItemInput.value = "";
 
-    renderItemList();
+  renderItemList();
 
-    result.textContent = "項目を追加したよ！♡";
+  result.textContent = "項目を追加したよ！♡";
 });
-
-
 
 const historyList = document.getElementById("historyList");
 const clearHistoryButton = document.getElementById("clearHistoryButton");
@@ -226,7 +243,6 @@ function updateItems() {
   // 抽選項目をブラウザに保存
   localStorage.setItem("cardItems", JSON.stringify(items));
 
-  
   itemCount.textContent = `登録項目：${items.length}個`;
   cardMessage.textContent = "準備はいい？";
   result.textContent = "準備OK！カードをめくってみよう♪";
@@ -244,7 +260,7 @@ function drawCard() {
   // 結果をいったん隠して、期待感を演出
   result.textContent = "何が出るかな……？";
   result.classList.remove("show-result");
-  cardMessage.textContent = "ドキドキ……♡";
+  cardMessage.textContent = "ドキドキ……";
 
   // カードの色をランダムに変更
   const colors = ["pink", "lavender", "mint"];
@@ -374,3 +390,35 @@ itemsInput.value = items.join("\n");
 itemCount.textContent = `登録項目：${items.length}個`;
 renderTotalCount();
 renderItemList();
+
+// 編集をキャンセル
+cancelEditButton.addEventListener("click", () => {
+  editModal.hidden = true;
+  editingIndex = null;
+  editError.textContent = "";
+});
+
+// 編集内容を保存
+saveEditButton.addEventListener("click", () => {
+  if (isDrawing || editingIndex === null) return;
+
+  const newName = editItemInput.value.trim();
+
+  if (newName === "") {
+    editError.textContent = "項目名を入力してね！";
+    return;
+  }
+
+  if (items.some((item, index) => index !== editingIndex && item === newName)) {
+    editError.textContent = "同じ名前の項目があるよ！";
+    return;
+  }
+
+  items[editingIndex] = newName;
+  saveItemOrder();
+
+  editModal.hidden = true;
+  editingIndex = null;
+  editError.textContent = "";
+  result.textContent = "項目名を変更したよ！♡";
+});
