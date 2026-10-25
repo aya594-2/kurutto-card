@@ -588,22 +588,7 @@ footer {
     cursor: not-allowed;
 }
 
-/* スマホでの表示 */
-@media (max-width: 480px) {
-    #itemList li {
-        gap: 8px;
-        padding: 10px;
-    }
 
-    .item-button-area {
-        gap: 4px;
-    }
-
-    .item-button-area button {
-        min-width: 38px;
-        padding: 9px 8px;
-    }
-}
 
 /* 項目編集モーダル */
 .edit-modal[hidden] {
@@ -679,4 +664,102 @@ footer {
     padding: 11px 10px;
     border-radius: 20px;
 }
+
+
+/* ==============================
+   スマートフォン用レイアウト
+   ============================== */
+@media (max-width: 480px) {
+
+    /* 画面全体 */
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 20px 12px;
+        border-radius: 20px;
+    }
+
+    /* 項目入力欄と追加ボタン */
+    .item-add-row {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #newItemInput {
+        flex: 1 1 auto;
+        width: 0;
+        min-width: 0;
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+
+    .item-add-row button {
+        flex: 0 0 auto;
+        padding: 12px 16px;
+    }
+
+    /* 項目一覧 */
+    #itemList li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        width: 100%;
+        max-width: 100%;
+        margin: 8px auto;
+        padding: 10px 8px;
+    }
+
+    #itemList li > span {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 13px;
+        text-align: left;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    /* 上下・編集・削除ボタン */
+    #itemList .item-button-area {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        gap: 3px;
+    }
+
+    #itemList .item-button-area button {
+    box-sizing: border-box;
+    min-width: 0;
+    padding: 9px 4px;
+    margin: 0;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+    /* 項目反映・初期化ボタン */
+    #updateButton,
+#resetItemsButton {
+    display: inline-flex;
+    box-sizing: border-box;
+    width: calc(50% - 8px);
+    min-width: 0;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    margin: 4px 2px;
+    padding: 8px 4px;
+    font-size: 11px;
+    line-height: 1.4;
+    text-align: center;
+    white-space: normal;
+    word-break: keep-all;
+}
+}
+
 

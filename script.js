@@ -422,3 +422,29 @@ saveEditButton.addEventListener("click", () => {
   editError.textContent = "";
   result.textContent = "項目名を変更したよ！♡";
 });
+
+
+const resetItemsButton = document.getElementById("resetItemsButton");
+
+// 項目を初期状態に戻す
+resetItemsButton.addEventListener("click", () => {
+    if (isDrawing) return;
+
+    const confirmed = confirm(
+        "登録した項目を初期状態に戻すよ！\nよろしいですか？"
+    );
+
+    if (!confirmed) return;
+
+    items = [
+        "ゲーム",
+        "雑談",
+        "歌枠",
+        "質問コーナー"
+    ];
+
+    saveItemOrder();
+
+    cardMessage.textContent = "準備はいい？";
+    result.textContent = "項目を初期状態に戻したよ！♡";
+});
