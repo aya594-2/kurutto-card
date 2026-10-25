@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>くるっと！カード抽選</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <header class="header">
+            <p class="eyebrow">YOUR LITTLE CHOICE</p>
+            <h1>🎀 くるっと！カード抽選</h1>
+            <p class="subtitle">迷ったときは、カードにおまかせ。</p>
+        </header>
+
+        <section class="card-area">
+            <div id="choiceCard" class="choice-card">
+                <div class="card-inner">
+                    <span class="card-icon">✦</span>
+                    <p id="cardMessage">準備はいい？</p>
+                    <span class="card-decoration">♡</span>
+                </div>
+            </div>
+        </section>
+
+        <button id="drawButton" class="main-button">
+            カードをめくる ✨
+        </button>
+
+        <section class="result-area">
+            <p class="result-label">🎉 あなたへのお題</p>
+            <h2 id="result">ここに結果が表示されるよ</h2>
+        </section>
+
+        
+<!-- 抽選履歴 -->
+<section class="history-area">
+    <h2>📋 抽選履歴</h2>
+    <p class="history-description">これまでに出た結果だよ。</p>
+
+    <p id="totalCount" class="history-count">累計抽選回数：0回</p>
+
+    <ul id="historyList">
+        <li class="history-empty">まだ履歴はないよ</li>
+    </ul>
+
+    <button id="clearHistoryButton" class="sub-button">
+        履歴をクリア
+    </button>
+</section>
+
+
+        <section class="settings">
+            <h2>♡ 抽選する項目</h2>
+            <p>項目を1行ずつ入力してね。</p>
+
+            <textarea id="itemsInput" rows="6">ゲーム
+雑談
+歌枠
+質問コーナー</textarea>
+
+            <button id="updateButton" class="sub-button">
+                項目を反映する
+            </button>
+
+            <p id="itemCount">登録項目：4個</p>
+        </section>
+
+        <footer>
+            <p>made with ♡</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
