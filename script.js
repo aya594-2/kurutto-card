@@ -7,7 +7,12 @@ const result = document.getElementById("result");
 const itemCount = document.getElementById("itemCount");
 
 // 抽選する項目
-let items = ["ゲーム", "雑談", "歌枠", "質問コーナー"];
+let items = JSON.parse(localStorage.getItem("cardItems")) || [
+  "ゲーム",
+  "雑談",
+  "歌枠",
+  "質問コーナー",
+];
 
 // 抽選中かどうかを管理する
 let isDrawing = false;
@@ -24,60 +29,55 @@ function renderTotalCount() {
 const historyList = document.getElementById("historyList");
 const clearHistoryButton = document.getElementById("clearHistoryButton");
 
-
 function renderHistory() {
-    historyList.innerHTML = "";
+  historyList.innerHTML = "";
 
-    if (history.length === 0) {
-        const emptyItem = document.createElement("li");
-        emptyItem.className = "history-empty";
-        emptyItem.textContent = "まだ履歴はないよ♡";
-        historyList.appendChild(emptyItem);
-        return;
+  if (history.length === 0) {
+    const emptyItem = document.createElement("li");
+    emptyItem.className = "history-empty";
+    emptyItem.textContent = "まだ履歴はないよ♡";
+    historyList.appendChild(emptyItem);
+    return;
+  }
+
+  history.forEach((item, index) => {
+    const listItem = document.createElement("li");
+
+    const name = typeof item === "string" ? item : item.name;
+    const date = typeof item === "string" ? "" : item.date;
+
+    // 結果を表示
+    const nameText = document.createElement("div");
+    nameText.textContent = `${index + 1}. 🎉 ${name}`;
+    listItem.appendChild(nameText);
+
+    // 日時を表示
+    if (date) {
+      const dateText = document.createElement("small");
+      dateText.textContent = date;
+      dateText.style.display = "block";
+      dateText.style.marginTop = "6px";
+      dateText.style.color = "#a77d91";
+      listItem.appendChild(dateText);
     }
 
-    history.forEach((item, index) => {
-        const listItem = document.createElement("li");
+    // 個別削除ボタン
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "この履歴を削除";
+    deleteButton.className = "history-delete-button";
 
-        const name = typeof item === "string" ? item : item.name;
-        const date = typeof item === "string" ? "" : item.date;
+    deleteButton.addEventListener("click", () => {
+      history.splice(index, 1);
 
-        // 結果を表示
-        const nameText = document.createElement("div");
-        nameText.textContent = `${index + 1}. 🎉 ${name}`;
-        listItem.appendChild(nameText);
+      localStorage.setItem("cardHistory", JSON.stringify(history));
 
-        // 日時を表示
-        if (date) {
-            const dateText = document.createElement("small");
-            dateText.textContent = date;
-            dateText.style.display = "block";
-            dateText.style.marginTop = "6px";
-            dateText.style.color = "#a77d91";
-            listItem.appendChild(dateText);
-        }
-
-        // 個別削除ボタン
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "この履歴を削除";
-        deleteButton.className = "history-delete-button";
-
-        deleteButton.addEventListener("click", () => {
-            history.splice(index, 1);
-
-            localStorage.setItem(
-                "cardHistory",
-                JSON.stringify(history)
-            );
-
-            renderHistory();
-        });
-
-        listItem.appendChild(deleteButton);
-        historyList.appendChild(listItem);
+      renderHistory();
     });
-}
 
+    listItem.appendChild(deleteButton);
+    historyList.appendChild(listItem);
+  });
+}
 
 // 項目を画面に反映する
 function updateItems() {
@@ -100,6 +100,10 @@ function updateItems() {
 
   items = newItems;
 
+  // 抽選項目をブラウザに保存
+  localStorage.setItem("cardItems", JSON.stringify(items));
+
+  
   itemCount.textContent = `登録項目：${items.length}個`;
   cardMessage.textContent = "準備はいい？";
   result.textContent = "準備OK！カードをめくってみよう♪";
