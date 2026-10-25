@@ -26,6 +26,85 @@ function renderTotalCount() {
   totalCountDisplay.textContent = `累計抽選回数：${totalCount}回`;
 }
 
+
+const newItemInput = document.getElementById("newItemInput");
+const addItemButton = document.getElementById("addItemButton");
+const itemList = document.getElementById("itemList");
+
+// 登録済みの項目を一覧表示する
+function renderItemList() {
+    itemList.innerHTML = "";
+
+    items.forEach((item, index) => {
+        const listItem = document.createElement("li");
+        const itemName = document.createElement("span");
+        const deleteButton = document.createElement("button");
+
+        itemName.textContent = item;
+        deleteButton.textContent = "削除";
+        deleteButton.type = "button";
+        deleteButton.className = "sub-button";
+
+        deleteButton.addEventListener("click", () => {
+            if (isDrawing) return;
+
+            if (items.length <= 2) {
+                result.textContent = "抽選項目は2個以上必要だよ！";
+                return;
+            }
+
+            items.splice(index, 1);
+
+            itemsInput.value = items.join("\n");
+            localStorage.setItem("cardItems", JSON.stringify(items));
+
+            itemCount.textContent = `登録項目：${items.length}個`;
+            renderItemList();
+            result.textContent = "項目を削除したよ♪";
+        });
+
+        listItem.appendChild(itemName);
+        listItem.appendChild(deleteButton);
+        itemList.appendChild(listItem);
+    });
+}
+
+
+addItemButton.addEventListener("click", () => {
+    if (isDrawing) return;
+
+    const newItem = newItemInput.value.trim();
+
+    if (newItem === "") {
+        result.textContent = "追加する項目を入力してね！";
+        return;
+    }
+
+    if (items.length >= 50) {
+        result.textContent = "項目は50個までにしてね！";
+        return;
+    }
+
+    if (items.includes(newItem)) {
+        result.textContent = "同じ項目は登録済みだよ！";
+        return;
+    }
+
+    items.push(newItem);
+
+    itemsInput.value = items.join("\n");
+    localStorage.setItem("cardItems", JSON.stringify(items));
+
+    itemCount.textContent = `登録項目：${items.length}個`;
+    newItemInput.value = "";
+
+    renderItemList();
+
+    result.textContent = "項目を追加したよ！♡";
+});
+
+
+
 const historyList = document.getElementById("historyList");
 const clearHistoryButton = document.getElementById("clearHistoryButton");
 
@@ -250,3 +329,4 @@ clearHistoryButton.addEventListener("click", () => {
 itemsInput.value = items.join("\n");
 itemCount.textContent = `登録項目：${items.length}個`;
 renderTotalCount();
+renderItemList();
