@@ -1,12 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>くるっと！カード抽選</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <main class="container">
         <header class="header">
@@ -14,6 +15,23 @@
             <h1>🎀 くるっと！カード抽選</h1>
             <p class="subtitle">迷ったときは、カードにおまかせ。</p>
         </header>
+
+
+        <section class="theme-settings">
+            <p>🎨 テーマカラー</p>
+            <div class="theme-buttons">
+                <button type="button" class="theme-button" data-theme="pink">
+                    🎀 ピンク
+                </button>
+                <button type="button" class="theme-button" data-theme="lavender">
+                    💜 ラベンダー
+                </button>
+                <button type="button" class="theme-button" data-theme="mint">
+                    🌿 ミント
+                </button>
+            </div>
+        </section>
+
 
         <section class="card-area">
             <div id="choiceCard" class="choice-card">
@@ -34,22 +52,22 @@
             <h2 id="result">ここに結果が表示されるよ</h2>
         </section>
 
-        
-<!-- 抽選履歴 -->
-<section class="history-area">
-    <h2>📋 抽選履歴</h2>
-    <p class="history-description">これまでに出た結果だよ。</p>
 
-    <p id="totalCount" class="history-count">累計抽選回数：0回</p>
+        <!-- 抽選履歴 -->
+        <section class="history-area">
+            <h2>📋 抽選履歴</h2>
+            <p class="history-description">これまでに出た結果だよ。</p>
 
-    <ul id="historyList">
-        <li class="history-empty">まだ履歴はないよ</li>
-    </ul>
+            <p id="totalCount" class="history-count">累計抽選回数：0回</p>
 
-    <button id="clearHistoryButton" class="sub-button">
-        履歴をクリア
-    </button>
-</section>
+            <ul id="historyList">
+                <li class="history-empty">まだ履歴はないよ</li>
+            </ul>
+
+            <button id="clearHistoryButton" class="sub-button">
+                履歴をクリア
+            </button>
+        </section>
 
 
         <section class="settings">
@@ -62,22 +80,18 @@
 質問コーナー</textarea>
 
 
-<div class="item-manager">
-    <p>項目を1個ずつ追加</p>
+            <div class="item-manager">
+                <p>項目を1個ずつ追加</p>
 
-    <div class="item-add-row">
-        <input
-            type="text"
-            id="newItemInput"
-            placeholder="追加する項目を入力してね"
-        >
-        <button type="button" id="addItemButton" class="sub-button">
-            追加
-        </button>
-    </div>
+                <div class="item-add-row">
+                    <input type="text" id="newItemInput" placeholder="追加する項目を入力してね">
+                    <button type="button" id="addItemButton" class="sub-button">
+                        追加
+                    </button>
+                </div>
 
-    <ul id="itemList"></ul>
-</div>
+                <ul id="itemList"></ul>
+            </div>
 
 
             <button id="updateButton" class="sub-button">
@@ -85,7 +99,7 @@
             </button>
 
             <button type="button" id="resetItemsButton" class="sub-button">
-            項目を初期状態に戻す ↺
+                項目を初期状態に戻す ↺
             </button>
 
             <p id="itemCount">登録項目：4個</p>
@@ -99,32 +113,28 @@
     <script src="script.js" defer></script>
 
 
-<!-- 項目編集モーダル -->
-<div id="editModal" class="edit-modal" hidden>
-    <div class="edit-modal-content">
-        <h2> 項目名を編集</h2>
-        <p>新しい項目名を入力してね</p>
+    <!-- 項目編集モーダル -->
+    <div id="editModal" class="edit-modal" hidden>
+        <div class="edit-modal-content">
+            <h2> 項目名を編集</h2>
+            <p>新しい項目名を入力してね</p>
 
-        <input
-            type="text"
-            id="editItemInput"
-            placeholder="項目名を入力してね"
-            maxlength="50"
-        >
+            <input type="text" id="editItemInput" placeholder="項目名を入力してね" maxlength="50">
 
-        <p id="editError" class="edit-error"></p>
+            <p id="editError" class="edit-error"></p>
 
-        <div class="edit-modal-buttons">
-            <button type="button" id="cancelEditButton" class="sub-button">
-                キャンセル
-            </button>
-            <button type="button" id="saveEditButton" class="sub-button">
-                保存する
-            </button>
+            <div class="edit-modal-buttons">
+                <button type="button" id="cancelEditButton" class="sub-button">
+                    キャンセル
+                </button>
+                <button type="button" id="saveEditButton" class="sub-button">
+                    保存する
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
 
 </body>
+
 </html>

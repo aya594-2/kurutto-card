@@ -448,3 +448,33 @@ resetItemsButton.addEventListener("click", () => {
     cardMessage.textContent = "準備はいい？";
     result.textContent = "項目を初期状態に戻したよ！♡";
 });
+
+/* テーマカラーの切り替え */
+const themeButtons = document.querySelectorAll(".theme-button");
+
+// 保存されているテーマを読み込む
+const savedTheme = localStorage.getItem("cardTheme") || "pink";
+
+// テーマを画面に反映する関数
+function applyTheme(theme) {
+    document.body.dataset.theme = theme;
+
+    themeButtons.forEach((button) => {
+        button.classList.toggle(
+            "active",
+            button.dataset.theme === theme
+        );
+    });
+
+    localStorage.setItem("cardTheme", theme);
+}
+
+// テーマボタンを押したときの処理
+themeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        applyTheme(button.dataset.theme);
+    });
+});
+
+// 最初にテーマを反映する
+applyTheme(savedTheme);
