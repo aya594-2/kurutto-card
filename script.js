@@ -31,16 +31,51 @@ const newItemInput = document.getElementById("newItemInput");
 const addItemButton = document.getElementById("addItemButton");
 const itemList = document.getElementById("itemList");
 
-// 登録済みの項目を一覧表示する
+
 function renderItemList() {
     itemList.innerHTML = "";
 
     items.forEach((item, index) => {
         const listItem = document.createElement("li");
         const itemName = document.createElement("span");
+        const buttonArea = document.createElement("div");
+        const upButton = document.createElement("button");
+        const downButton = document.createElement("button");
         const deleteButton = document.createElement("button");
 
         itemName.textContent = item;
+
+        // 上へ移動するボタン
+        upButton.textContent = "↑";
+        upButton.type = "button";
+        upButton.className = "sub-button";
+        upButton.disabled = index === 0;
+
+        upButton.addEventListener("click", () => {
+            if (isDrawing || index === 0) return;
+
+            [items[index - 1], items[index]] =
+                [items[index], items[index - 1]];
+
+            saveItemOrder();
+        });
+
+        // 下へ移動するボタン
+        downButton.textContent = "↓";
+        downButton.type = "button";
+        downButton.className = "sub-button";
+        downButton.disabled = index === items.length - 1;
+
+        downButton.addEventListener("click", () => {
+            if (isDrawing || index === items.length - 1) return;
+
+            [items[index], items[index + 1]] =
+                [items[index + 1], items[index]];
+
+            saveItemOrder();
+        });
+
+        // 削除ボタン
         deleteButton.textContent = "削除";
         deleteButton.type = "button";
         deleteButton.className = "sub-button";
@@ -54,20 +89,29 @@ function renderItemList() {
             }
 
             items.splice(index, 1);
-
-            itemsInput.value = items.join("\n");
-            localStorage.setItem("cardItems", JSON.stringify(items));
-
-            itemCount.textContent = `登録項目：${items.length}個`;
-            renderItemList();
+            saveItemOrder();
             result.textContent = "項目を削除したよ♪";
         });
 
+        buttonArea.className = "item-button-area";
+        buttonArea.appendChild(upButton);
+        buttonArea.appendChild(downButton);
+        buttonArea.appendChild(deleteButton);
+
         listItem.appendChild(itemName);
-        listItem.appendChild(deleteButton);
+        listItem.appendChild(buttonArea);
         itemList.appendChild(listItem);
     });
 }
+
+// 項目の順番・内容を保存して画面を更新
+function saveItemOrder() {
+    itemsInput.value = items.join("\n");
+    localStorage.setItem("cardItems", JSON.stringify(items));
+    itemCount.textContent = `登録項目：${items.length}個`;
+    renderItemList();
+}
+
 
 
 addItemButton.addEventListener("click", () => {

@@ -535,3 +535,73 @@ footer {
     margin: 0;
 }
 
+/* 項目を1個ずつ追加する入力欄 */
+#newItemInput {
+    box-sizing: border-box;
+    width: min(100%, 280px);
+    padding: 12px 16px;
+    border: 1px solid #f5b8d0;
+    border-radius: 20px;
+    background: #fff;
+    color: #765565;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#newItemInput::placeholder {
+    color: #c49aaa;
+}
+
+#newItemInput:focus {
+    border-color: #ed8eb5;
+    box-shadow: 0 0 0 3px #ffe5ef;
+}
+
+/* 入力欄と追加ボタン */
+.item-add-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px auto 20px;
+}
+
+/* 上下・削除ボタン */
+.item-button-area {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.item-button-area button {
+    min-width: 48px;
+    padding: 10px 12px;
+    margin: 0;
+}
+
+.item-button-area button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* スマホでの表示 */
+@media (max-width: 480px) {
+    #itemList li {
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .item-button-area {
+        gap: 4px;
+    }
+
+    .item-button-area button {
+        min-width: 38px;
+        padding: 9px 8px;
+    }
+}
+
